@@ -21,4 +21,6 @@
 
     <string name="btnDecimalText">,</string>
     <string name="btnClearText">C</string>
+
+    <string name="txtCalculation"></string>
 </resources>
