@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <integer name="btnWidth">80</integer>
+    <integer name="btnHeight">80</integer>
+    <integer name="btnMargin">2</integer>
+</resources>

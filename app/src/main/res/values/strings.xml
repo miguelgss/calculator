@@ -1,0 +1,24 @@
+<resources>
+    <string name="app_name">Calculator</string>
+
+    <string name="btnZeroText">0</string>
+    <string name="btnOneText">1</string>
+    <string name="btnTwoText">2</string>
+    <string name="btnThreeText">3</string>
+    <string name="btnFourText">4</string>
+    <string name="btnFiveText">5</string>
+    <string name="btnSixText">6</string>
+    <string name="btnSevenText">7</string>
+    <string name="btnEightText">8</string>
+    <string name="btnNineText">9</string>
+
+
+    <string name="btnSum">+</string>
+    <string name="btnSubtract">-</string>
+    <string name="btnMultiply">X</string>
+    <string name="btnDivide">÷</string>
+    <string name="btnEquals">=</string>
+
+    <string name="btnDecimalText">,</string>
+    <string name="btnClearText">C</string>
+</resources>
