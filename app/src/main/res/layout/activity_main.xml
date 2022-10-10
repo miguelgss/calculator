@@ -268,8 +268,8 @@
 
         <TextView
             android:id="@+id/txtDisplayCalculation"
-            android:layout_width="209dp"
-            android:layout_height="69dp"
+            android:layout_width="318dp"
+            android:layout_height="78dp"
             android:background="@color/teal_700"
             android:gravity="end"
             android:padding="5dp"
