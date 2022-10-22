@@ -7,6 +7,10 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.material.snackbar.Snackbar;
+
+import java.util.Objects;
+
 public class MainActivity extends AppCompatActivity {
 
     @Override
@@ -35,6 +39,10 @@ public class MainActivity extends AppCompatActivity {
         Button btnSubtract = findViewById(R.id.btnSubtract);
         Button btnMultiply = findViewById(R.id.btnMultiply);
         Button btnDivide = findViewById(R.id.btnDivide);
+        Button btnPotencia = findViewById(R.id.btnPotencia);
+        Button btnPorcentagem = findViewById(R.id.btnPorcentagem);
+        Button btnMod = findViewById(R.id.btnMod);
+        Button btnRaiz = findViewById(R.id.btnRaiz);
 
         Button btnEquals = findViewById(R.id.btnEquals);
 
@@ -60,6 +68,11 @@ public class MainActivity extends AppCompatActivity {
         btnMultiply.setOnClickListener(v -> getInputOperators(btnMultiply.getText().charAt(0)));
         btnDivide.setOnClickListener(v -> getInputOperators(btnDivide.getText().charAt(0)));
 
+        btnPotencia.setOnClickListener(v -> getInputOperators('^'));
+        btnPorcentagem.setOnClickListener(v -> getInputOperators(btnPorcentagem.getText().charAt(0)));
+        btnMod.setOnClickListener(v -> getInputOperators(btnMod.getText().charAt(0)));
+        btnRaiz.setOnClickListener(v -> getInputOperators(btnRaiz.getText().charAt(0)));
+
         btnEquals.setOnClickListener(v -> showResult());
     }
 
@@ -82,37 +95,80 @@ public class MainActivity extends AppCompatActivity {
         TextView txtDisplayCalculation = findViewById(R.id.txtDisplayCalculation);
         String[] txtCal = txtDisplayCalculation.getText().toString().split(" ");
         int contador = 0;
-        float result = 0;
+        double result = 0;
 
-        if(tryParseFloat(txtCal[txtCal.length - 1])){
-            for(String e : txtCal ){
-                Log.i("Test: ",txtCal[contador]);
-                switch(e){
-                    case "+":
-                        result = Float.parseFloat(txtCal[contador - 1]) + Float.parseFloat(txtCal[contador + 1]);
-                        txtCal[contador+1] = String.valueOf(result);
-                        break;
-                    case "-":
-                        result = Float.parseFloat(txtCal[contador - 1]) - Float.parseFloat(txtCal[contador + 1]);
-                        txtCal[contador+1] = String.valueOf(result);
-                        break;
-                    case "X":
-                        result = Float.parseFloat(txtCal[contador - 1]) * Float.parseFloat(txtCal[contador + 1]);
-                        txtCal[contador+1] = String.valueOf(result);
-                        break;
-                    case "÷":
-                        result = Float.parseFloat(txtCal[contador - 1]) / Float.parseFloat(txtCal[contador + 1]);
-                        txtCal[contador+1] = String.valueOf(result);
-                        break;
+        try {
+            if(txtCal[txtCal.length - 1] == "%"){}
+            if(verifyCalculation(txtCal[txtCal.length - 1])){
+                for(String e : txtCal ){
+                    Log.i("Test: ",txtCal[contador]);
+                    switch(e){
+                        case "+":
+                            result = Double.parseDouble(txtCal[contador - 1]) + Double.parseDouble(txtCal[contador + 1]);
+                            txtCal[contador+1] = String.valueOf(result);
+                            break;
+
+                        case "-":
+                            result = Double.parseDouble(txtCal[contador - 1]) - Double.parseDouble(txtCal[contador + 1]);
+                            txtCal[contador+1] = String.valueOf(result);
+                            break;
+
+                        case "X":
+                            result = Double.parseDouble(txtCal[contador - 1]) * Double.parseDouble(txtCal[contador + 1]);
+                            txtCal[contador+1] = String.valueOf(result);
+                            break;
+
+                        case "÷":
+                            result = Double.parseDouble(txtCal[contador - 1]) / Double.parseDouble(txtCal[contador + 1]);
+                            txtCal[contador+1] = String.valueOf(result);
+                            break;
+
+                        case "^":
+                            result = Math.pow(Double.parseDouble(txtCal[contador - 1]), Double.parseDouble(txtCal[contador + 1]));
+                            txtCal[contador+1] = String.valueOf(result);
+                            break;
+
+                        case "M": // Mod, calculo para obter resto.
+                            result = Double.parseDouble(txtCal[contador - 1]) % Double.parseDouble(txtCal[contador + 1]);
+                            txtCal[contador+1] = String.valueOf(result);
+                            break;
+
+                        case "%":
+                            result = Double.parseDouble(txtCal[contador - 1]) / 100;
+                            if(txtCal.length - 1 > contador){
+                                if(tryParseDouble(txtCal[contador+1])){
+                                    throw new Exception("Cálculo inválido.");
+                                }
+                            }
+                            txtCal[contador] = String.valueOf(result);
+                            break;
+
+                        case "√":
+                            result = Math.sqrt(Double.parseDouble(txtCal[contador + 1]));
+                            if(txtCal.length - 1 > contador){
+                                if(tryParseDouble(txtCal[contador+1])){
+                                    throw new Exception("Cálculo inválido.");
+                                }
+                            }
+                            txtCal[contador + 1] = String.valueOf(result);
+                            break;
+
+                    }
+                    contador++;
                 }
-                contador++;
+
+                txtDisplayCalculation.setText(String.valueOf(result));
+            } else {
+                txtDisplayCalculation.setText("Error!!!");
+                throw new Exception("Uma operação não pode terminar com um sinal de operação.");
             }
-
-            txtDisplayCalculation.setText(String.valueOf(result));
-        } else {
-            txtDisplayCalculation.setText("Error!!!");
+        } catch (Exception ex){
+            // POP-UP
+            Snackbar.make(findViewById(R.id.cstLayout),
+                    ex.getMessage(),
+                    Snackbar.LENGTH_LONG
+            ).show();
         }
-
     }
 
     private void clear(){
@@ -120,9 +176,16 @@ public class MainActivity extends AppCompatActivity {
         txtDisplayCalculation.setText("");
     }
 
-    private boolean tryParseFloat(String input){
+    private boolean verifyCalculation(String input){
+        if(Objects.equals(input, "%")){
+            return true;
+        }
+        return tryParseDouble(input);
+    }
+
+    private boolean tryParseDouble(String input){
         try {
-            Float.parseFloat(input);
+            Double.parseDouble(input);
             return true;
         } catch (NumberFormatException ex){
             return false;

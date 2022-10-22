@@ -17,6 +17,10 @@
     <string name="btnSubtract">-</string>
     <string name="btnMultiply">X</string>
     <string name="btnDivide">÷</string>
+    <string name="btnPotencia">X^y</string>
+    <string name="btnMod">Mod</string>
+    <string name="btnPorcentagem">%</string>
+    <string name="btnRaiz">√</string>
     <string name="btnEquals">=</string>
 
     <string name="btnDecimalText">,</string>
